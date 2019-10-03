@@ -1,0 +1,16 @@
+{
+"companyName": "Adorkable",
+"productName": "Travelling",
+"productVersion": "0.1",
+"dataUrl": "index.data.unityweb",
+"wasmCodeUrl": "index.wasm.code.unityweb",
+"wasmFrameworkUrl": "index.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0","WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#80147F",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.2.5f1"
+}

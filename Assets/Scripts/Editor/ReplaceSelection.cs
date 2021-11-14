@@ -41,7 +41,7 @@ public class ReplaceSelection : ScriptableWizard
             return;
         }
  
-        Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.OnlyUserModifiable);
+        Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.Editable);
         Debug.Log("Replacing " + transforms.Length, this);
 
         Undo.SetCurrentGroupName("Replace Selection");

@@ -19,12 +19,14 @@ public class SceneScroller : MonoBehaviour
         private float weight;
         public float Weight
         {
-            get {
+            get
+            {
                 return this.weight;
             }
         }
 
-        public SceneGroupInfo(SceneGroup sceneGroup, IntMinMaxRange sceneInstanceCount, float weight) {
+        public SceneGroupInfo(SceneGroup sceneGroup, IntMinMaxRange sceneInstanceCount, float weight)
+        {
             this.sceneGroup = sceneGroup;
             this.sceneInstanceCount = sceneInstanceCount;
             this.weight = weight;
@@ -51,12 +53,14 @@ public class SceneScroller : MonoBehaviour
         private float weight;
         public float Weight
         {
-            get {
+            get
+            {
                 return this.weight;
             }
         }
 
-        public SpawnableInterestInfo(GameObject spawnableInterest, float weight) {
+        public SpawnableInterestInfo(GameObject spawnableInterest, float weight)
+        {
             this.spawnableInterest = spawnableInterest;
             this.weight = weight;
         }
@@ -75,11 +79,13 @@ public class SceneScroller : MonoBehaviour
     private List<GameObject> _sceneInstances;
 
     public SceneGroupInfo overrideSceneGroupInfo;
+    public int clearOverrideSceneGroupInfoAfter;
+    private int overrideSceneGroupInfoCount;
 
     public float speed;
     public float setSpeedDistance;
     public float cullAfterZ;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,7 +96,8 @@ public class SceneScroller : MonoBehaviour
         this._sceneInstancesTravellingOffset = this.sceneInstancesDepthOffset;
 
         this.sceneInstancesTravelCurveSolver = this.GetComponent<BGCcMath>();
-        if (this.sceneInstancesTravelCurveSolver == null) {
+        if (this.sceneInstancesTravelCurveSolver == null)
+        {
             Debug.LogError("Could not find curve solver for Travel curve");
         }
     }
@@ -99,9 +106,10 @@ public class SceneScroller : MonoBehaviour
     void Update()
     {
         int index = 0;
-        
+
         this._sceneInstancesTravellingOffset -= this.speed * Time.deltaTime;
-        while (this._sceneInstancesTravellingOffset < 0) {
+        while (this._sceneInstancesTravellingOffset < 0)
+        {
             this._sceneInstancesTravellingOffset += this.sceneInstancesDepthOffset;
         }
 
@@ -120,19 +128,22 @@ public class SceneScroller : MonoBehaviour
         }
         this.FillRemaining();
 
-        if (this.ShouldApplyGlobalRenderLimits()) {
+        if (this.ShouldApplyGlobalRenderLimits())
+        {
             this.ApplyGlobalRenderLimits();
         }
     }
 
-    protected bool ShouldApplyGlobalRenderLimits() {
+    protected bool ShouldApplyGlobalRenderLimits()
+    {
         return this.cachedSceneInstancesMaxCount != this.sceneInstancesMaxCount ||
             this.cachedSceneInstancesDepthOffset != this.sceneInstancesDepthOffset ||
             this.cachedSceneInstancesTravelCurve != this.sceneInstancesTravelCurve;
     }
 
     // TODO: adjust when appropriate values change
-    protected void ApplyGlobalRenderLimits() {
+    protected void ApplyGlobalRenderLimits()
+    {
         this.cachedSceneInstancesMaxCount = this.sceneInstancesMaxCount;
         this.cachedSceneInstancesDepthOffset = this.sceneInstancesDepthOffset;
         this.cachedSceneInstancesTravelCurve = this.sceneInstancesTravelCurve;
@@ -140,12 +151,14 @@ public class SceneScroller : MonoBehaviour
         var farthestSceneStart = this.cachedSceneInstancesMaxCount * this.cachedSceneInstancesDepthOffset; // + 1 because we want the back edge of the last possible scene
         var farthestSceneEnd = farthestSceneStart + this.cachedSceneInstancesDepthOffset;
 
-        if (this.sceneInstancesTravelCurveSolver != null) {
+        if (this.sceneInstancesTravelCurveSolver != null)
+        {
             Vector3 farthestSceneStartLocation = this.sceneInstancesTravelCurveSolver.CalcPositionByDistance(farthestSceneStart);
             Vector3 farthestSceneEndLocation = this.sceneInstancesTravelCurveSolver.CalcPositionByDistance(farthestSceneEnd);
-            
+
             var camera = this.GetComponent<Camera>();
-            if (camera != null) {
+            if (camera != null)
+            {
                 camera.farClipPlane = farthestSceneEndLocation.z; // Should we add a buffer to be safe?
             }
 
@@ -170,13 +183,15 @@ public class SceneScroller : MonoBehaviour
         return false;
     }
 
-    protected float DistanceForSceneInstanceIndex(int index) {
+    protected float DistanceForSceneInstanceIndex(int index)
+    {
         return this._sceneInstancesTravellingOffset + this.sceneInstancesDepthOffset * index;
     }
 
     protected void UpdatePositions(GameObject scene, int index)
     {
-        if (this.sceneInstancesTravelCurveSolver == null) {
+        if (this.sceneInstancesTravelCurveSolver == null)
+        {
             return;
         }
 
@@ -187,13 +202,16 @@ public class SceneScroller : MonoBehaviour
         scene.transform.SetPositionAndRotation(updatedPosition, scene.transform.rotation);
 
         var isPastSetSpeedDistance = Vector3.Distance(this.gameObject.transform.position, scene.transform.position) <= this.setSpeedDistance;
-        if (wasBeyondSetSpeedDistance && isPastSetSpeedDistance) {
+        if (wasBeyondSetSpeedDistance && isPastSetSpeedDistance)
+        {
             this.ModifySpeed(scene.GetComponent<SceneGroup.SceneInfo.ModifySceneScrollerSpeed>());
         }
     }
 
-    public void ModifySpeed(SceneGroup.SceneInfo.ModifySceneScrollerSpeed modifyWith) {
-        if (modifyWith == null) {
+    public void ModifySpeed(SceneGroup.SceneInfo.ModifySceneScrollerSpeed modifyWith)
+    {
+        if (modifyWith == null)
+        {
             return;
         }
         var previous = this.speed;
@@ -226,15 +244,19 @@ public class SceneScroller : MonoBehaviour
         }
     }
 
-    protected void SetupNewInstance(GameObject newInstance) {
-        if (this._sceneInstances.Count > 0) {
+    protected void SetupNewInstance(GameObject newInstance)
+    {
+        if (this._sceneInstances.Count > 0)
+        {
             var lastInstance = this._sceneInstances[this._sceneInstances.Count - 1];
             var lastTerrain = lastInstance.GetComponent<Terrain>();
             var newTerrain = newInstance.GetComponent<Terrain>();
-            if (lastTerrain != null && newTerrain != null) {
+            if (lastTerrain != null && newTerrain != null)
+            {
                 newTerrain.SetNeighbors(null, null, null, lastTerrain);
 
-                if (this._sceneInstances.Count > 1) {
+                if (this._sceneInstances.Count > 1)
+                {
                     var lastLastInstance = this._sceneInstances[this._sceneInstances.Count - 2];
                     var lastLastTerrain = lastLastInstance.GetComponent<Terrain>();
                     lastTerrain.SetNeighbors(null, newTerrain, null, lastLastTerrain);
@@ -246,9 +268,22 @@ public class SceneScroller : MonoBehaviour
     protected SceneGroupInstanceInfo GetNextSceneGroupInstanceInfo()
     {
         SceneGroupInstanceInfo result = new SceneGroupInstanceInfo();
-        if (this.overrideSceneGroupInfo.sceneGroup != null) {
+        if (this.overrideSceneGroupInfo.sceneGroup != null)
+        {
             result.group = this.overrideSceneGroupInfo;
-        } else {
+            if (clearOverrideSceneGroupInfoAfter > 0)
+            {
+                overrideSceneGroupInfoCount += 1;
+                if (overrideSceneGroupInfoCount >= clearOverrideSceneGroupInfoAfter)
+                {
+                    this.overrideSceneGroupInfo.sceneGroup = null;
+                    clearOverrideSceneGroupInfoAfter = 0;
+                    overrideSceneGroupInfoCount = 0;
+                }
+            }
+        }
+        else
+        {
             result.group = WeightedSet<SceneGroupInfo>.SelectRandom(this.sceneGroupInfos);
         }
 
@@ -267,7 +302,8 @@ public class SceneScroller : MonoBehaviour
             // HACK: for now let's make sure we have a proper SceneGroupInfo, but also not forever
             var count = 0;
             SceneGroupInfo test = instanceInfo.group;
-            while(!test.sceneGroup && count < 10) {
+            while (!test.sceneGroup && count < 10)
+            {
                 instanceInfo = this.GetNextSceneGroupInstanceInfo();
                 count++;
             }
@@ -277,7 +313,8 @@ public class SceneScroller : MonoBehaviour
         instanceInfo.remainingInstanceCount -= 1;
 
         SceneGroupInfo current = instanceInfo.group;
-        if(!current.sceneGroup) {
+        if (!current.sceneGroup)
+        {
             Debug.LogWarning("Current SceneGroupInfo " + current + " has no scene group, unable to InstantiateNext", this);
             return null;
         }
@@ -297,16 +334,20 @@ public class SceneScroller : MonoBehaviour
         return result;
     }
 
-    protected void SpawnInterests(SpawnInterestsInside spawnInterests) {
-        if (spawnInterests == null) {
+    protected void SpawnInterests(SpawnInterestsInside spawnInterests)
+    {
+        if (spawnInterests == null)
+        {
             return;
         }
-        if (Random.Range(0.0f, 1.0f) > this.spawnableInterestChance) { 
+        if (Random.Range(0.0f, 1.0f) > this.spawnableInterestChance)
+        {
             return;
         }
-        if (this.spawnableInterestInfo.Length == 0) {
+        if (this.spawnableInterestInfo.Length == 0)
+        {
             return;
         }
         spawnInterests.SpawnInstances(this.spawnableInterestInfo, this.spawnableInterestSubchance, this.spawnableInterestMultiplier);
-    } 
+    }
 }

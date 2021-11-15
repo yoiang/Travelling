@@ -711,17 +711,21 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     : CT_TPS
-    Android: CT_TPS
-    Lumin: CT_TPS
-    Nintendo Switch: CT_TPS
-    PS4: CT_TPS
-    Stadia: CT_TPS
-    Standalone: CT_TPS
-    WebGL: CT_TPS
-    Windows Store Apps: CT_TPS
-    XboxOne: CT_TPS
+    Android: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
+    CloudRendering: UNITY_POST_PROCESSING_STACK_V2
+    EmbeddedLinux: UNITY_POST_PROCESSING_STACK_V2
+    GameCoreXboxOne: UNITY_POST_PROCESSING_STACK_V2
+    Lumin: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
+    Nintendo Switch: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
+    PS4: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
+    PS5: UNITY_POST_PROCESSING_STACK_V2
+    Stadia: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
+    Standalone: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
+    WebGL: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
+    Windows Store Apps: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
+    XboxOne: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
     iPhone: CT_TPS
-    tvOS: CT_TPS
+    tvOS: CT_TPS;UNITY_POST_PROCESSING_STACK_V2
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

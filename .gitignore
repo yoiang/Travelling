@@ -49,3 +49,6 @@ crashlytics-build.properties
 TPS_cache/
 /iOS
 /OSX
+
+# Recordings
+Recordings/*
